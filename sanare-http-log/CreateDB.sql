@@ -1,0 +1,4 @@
+CREATE TABLE accesslog (id serial NOT NULL PRIMARY KEY, log_line json NOT NULL, created_at TIMESTAMP NOT NULL);
+--GRANT ALL PRIVILEGES ON DATABASE http_access_log to sanare;
+GRANT ALL PRIVILEGES ON ALL TABLES in SCHEMA public to sanare;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES in SCHEMA public to sanare;

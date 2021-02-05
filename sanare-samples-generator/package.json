@@ -1,0 +1,14 @@
+{
+  "name": "sanare-samples-generator",
+  "version": "1.0.0",
+  "description": "Generator of HTTP - Databasae, HTTP - FS, and HTTP - WS samples",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David R. Matos <david.r.matos@tecnico.ulisboa.pt>",
+  "license": "MIT",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
+}

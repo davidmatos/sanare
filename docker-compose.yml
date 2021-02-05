@@ -1,0 +1,143 @@
+version: '3.3'
+
+
+networks:
+  sanare:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.1.0.0/24
+
+services:
+  #discovery service - consul
+  consul:
+    image: consul:latest
+    command: "agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0"
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+  
+  #Wordpress  
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    hostname: db
+    networks:
+      sanare:
+        ipv4_address: 10.1.0.99
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    hostname: wordpress
+    volumes:
+      - wordpress_fs:/var/www/html
+    networks:
+      sanare:
+        ipv4_address: 10.1.0.100
+    ports:
+      - "80:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+
+
+#Sanare
+  # sanare-manager:
+  #   depends_on:
+  #     - consul
+  #   build: ./sanare-manager
+  #   hostname: sanare-manager
+  #   networks:
+  #     - sanare
+  #   ports:
+  #     - "3000:3000"
+
+  sanare-db-agent:
+    depends_on:
+      - db
+      - consul
+    build: ./sanare-db-agent
+    hostname: sanare-db-agent
+    networks:
+      - sanare
+    ports:
+      - "3001:3001"
+
+  sanare-http-agent:
+    build: ./sanare-http-agent
+    hostname: sanare-http-agent
+    networks:
+      - sanare
+    ports:
+      - 8081:80
+      - 443:443
+
+  sanare-http-log:
+    build: ./sanare-http-log
+    hostname: sanare-http-log
+    networks:
+      sanare:
+        ipv4_address: 10.1.0.123
+    ports:
+      - "5432:5432"
+
+
+  # sanare-fs-agent:
+  #   build: ./sanare-fs-agent
+  #   hostname: sanare-fs-agent
+  #   volumes:
+  #     - wordpress_fs:/var/www/html
+  #   networks:
+  #     - sanare
+  #   ports:
+  #     - 3006
+
+
+  # nginx: 
+  #   image: nginx:latest
+  #   container_name: production_nginx
+  #   volumes:
+  #     - ./sanare-http-agent-nginx/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./sanare-http-agent-nginx/access.log:/var/log/nginx/access.log
+  #   networks:
+  #     - sanare
+  #   ports:
+  #     - 8081:80
+  #     - 443:443
+
+
+
+  sanare-log:
+    image: mongo:latest
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: sanare
+    #   DATABASE_USERNAME: sanare
+    #   DATABASE_PASSWORD: sanare
+    ports:
+      - "27017:27017"
+    networks:
+      sanare:
+        ipv4_address: 10.1.0.101
+
+
+
+
+volumes:
+  db_data: {}
+  wordpress_fs: 

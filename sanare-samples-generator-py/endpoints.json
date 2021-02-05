@@ -1,0 +1,60 @@
+{
+    "host": "http://127.0.0.1",
+    "port": 8081,
+    "endpoints" : [
+
+        {
+            "desc": "Comment a post",
+            "uri": "/wp-comments-post.php",
+            "method": "POST",
+            "params": {"comment":"<random>", "submit": "Post+Comment", "comment_post_ID": "1", "comment_parent": "0", "_wp_unfiltered_html_comment": "<random>", "author": "sanare", "email": "sanare@sanare.com" }
+        },
+
+        {
+            "desc": "Homepage",
+            "uri": "/",
+            "method": "GET",
+            "params": {"param1":"value1", "param2": "value2"}
+        },
+        {
+            "desc": "User",
+            "uri": "/author/sanare/",
+            "method": "GET",
+            "params": {"param1":"value1", "param2": "value2"}
+        },
+        {
+            "desc": "Category",
+            "uri": "/category/uncategorized/",
+            "method": "GET",
+            "params": {"param1":"value1", "param2": "value2"}
+        },
+        {
+            "desc": "Posts by date",
+            "uri": "/2020/06/",
+            "method": "GET",
+            "params": {"param1":"value1", "param2": "value2"}
+        },
+        {
+            "desc": "Login",
+            "uri": "/wp-login.php",
+            "method": "GET",
+            "params": {"param1":"value1", "param2": "value2"}
+        }
+
+
+        
+
+
+
+    ]
+}
+
+
+
+
+
+
+
+
+
+

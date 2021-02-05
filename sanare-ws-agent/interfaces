@@ -1,0 +1,8 @@
+auto ens160
+iface ens160 inet dhcp
+
+auto ens192
+iface ens192 inet static
+    address 10.1.0.101
+    netmask 255.255.255.0
+    gateway 10.1.0.110

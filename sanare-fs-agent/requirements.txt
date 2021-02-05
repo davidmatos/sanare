@@ -1,0 +1,4 @@
+-i https://pypi.org/simple
+pathtools==0.1.2
+pymongo==3.10.1
+watchdog==0.10.2

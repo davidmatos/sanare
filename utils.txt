@@ -1,0 +1,15 @@
+ docker network create sanare
+
+docker run --name some-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=mysql --network sanare -d mysql:latest
+
+docker run --name some-wordpress -p 8080:80 --network sanare -d wordpress
+
+WordPress:
+username:password
+
+
+
+docker-compose up -d
+
+sanare:s@cWQ4WuTF5v4nJeF1
+
